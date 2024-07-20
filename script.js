@@ -2,7 +2,7 @@ const OPERACIONES = ['suma', 'resta', 'multiplicación', 'división'];
 let numeros = [];
 
 function obtenerNumeros() {
-    for (let i = 0; i < 100000000000; i++) {
+    for (let i = 0; i < 2; i++) {
         let numero = parseFloat(prompt(`Ingrese el número ${i + 1}:`));
         numeros.push(numero);
     }
