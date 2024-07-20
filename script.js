@@ -1,6 +1,8 @@
+// Declaración de variables y constantes
 const OPERACIONES = ['suma', 'resta', 'multiplicación', 'división'];
 let numeros = [];
 
+// Función para obtener números del usuario
 function obtenerNumeros() {
     for (let i = 0; i < 2; i++) {
         let numero = parseFloat(prompt(`Ingrese el número ${i + 1}:`));
@@ -8,6 +10,7 @@ function obtenerNumeros() {
     }
 }
 
+// Función para realizar la operación seleccionada
 function realizarOperacion(operacion) {
     let resultado;
     switch (operacion) {
@@ -35,11 +38,12 @@ function realizarOperacion(operacion) {
     console.log(`El resultado de la ${operacion} es: ${resultado}`);
 }
 
-
+// Función principal que controla el flujo del simulador
 function iniciarSimulador() {
     obtenerNumeros();
     let operacion = prompt(`Seleccione una operación: ${OPERACIONES.join(', ')}`);
     realizarOperacion(operacion);
 }
 
+// Iniciar el simulador
 iniciarSimulador();
