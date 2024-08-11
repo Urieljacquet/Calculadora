@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Promedio</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Agrega un archivo CSS para el estilo -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <h1>Simulador de Promedio</h1>
     <p>
-        Este simulador permite calcular el promedio de una serie de calificaciones.
+        Este simulador permite calcular el promedio de una serie de calificaciones. Ingresa la cantidad de calificaciones que deseas promediar.
     </p>
-
     <form id="calificacionesForm">
         <label for="numCalificaciones">Número de calificaciones:</label>
-        <input type="number" id="numCalificaciones" min="1" required>
-        <button type="submit">Iniciar Simulador</button>
+        <input type="number" id="numCalificaciones" min="1" placeholder="Ingresa un número">
+        <button type="submit">ingresar calificaciones</button>
     </form>
-
     <div id="calificacionesContainer"></div>
     <div id="resultado"></div>
-
-    <script src="script.js"></script>
+    <button id="resetButton" style="display:none;">Reiniciar</button>
 </body>
 </html>

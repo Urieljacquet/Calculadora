@@ -1,3 +1,4 @@
+
 class SimuladorPromedio {
     constructor() {
         this.calificaciones = [];
@@ -12,9 +13,9 @@ class SimuladorPromedio {
     }
 
     calcularPromedio() {
-        if (this.calificaciones.length === 0) return 0; // Evitar división por cero
+        if (this.calificaciones.length === 0) return 0;
         const suma = this.calificaciones.reduce((acum, cal) => acum + cal, 0);
-        return suma / this.calificaciones.length; // Cálculo correcto del promedio
+        return suma / this.calificaciones.length;
     }
 
     guardarEnStorage() {
@@ -26,6 +27,11 @@ class SimuladorPromedio {
         if (calificacionesGuardadas) {
             this.calificaciones = calificacionesGuardadas;
         }
+    }
+
+    reiniciarSimulador() {
+        this.calificaciones = [];
+        localStorage.removeItem('calificaciones');
     }
 }
 
@@ -45,7 +51,6 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
         return;
     }
 
-    // Limpiar calificaciones antes de agregar nuevas
     simulador.calificaciones = [];
 
     for (let i = 0; i < numCalificaciones; i++) {
@@ -66,11 +71,19 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
     calificacionesContainer.appendChild(calcularBtn);
 });
 
+document.getElementById('resetButton').addEventListener('click', function() {
+    simulador.reiniciarSimulador();
+    document.getElementById('calificacionesForm').reset();
+    document.getElementById('calificacionesContainer').innerHTML = '';
+    document.getElementById('resultado').style.display = 'none';
+    this.style.display = 'none';
+});
+
 function procesarCalificaciones() {
     const inputs = document.querySelectorAll('.calificacion-input');
     let valido = true;
 
-    // Limpiar calificaciones antes de procesar
+    
     simulador.calificaciones = [];
 
     inputs.forEach(input => {
@@ -85,6 +98,7 @@ function procesarCalificaciones() {
         simulador.guardarEnStorage();
         const promedio = simulador.calcularPromedio();
         mostrarMensaje(`El promedio de las calificaciones es: ${promedio.toFixed(2)}`);
+        document.getElementById('resetButton').style.display = 'block'; 
     }
 }
 
