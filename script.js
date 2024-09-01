@@ -1,4 +1,4 @@
-
+// Clase para manejar el proceso de calificaciones
 class SimuladorPromedio {
     constructor() {
         this.calificaciones = [];
@@ -51,6 +51,7 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
         return;
     }
 
+    // Limpiar calificaciones antes de agregar nuevas
     simulador.calificaciones = [];
 
     for (let i = 0; i < numCalificaciones; i++) {
@@ -83,7 +84,7 @@ function procesarCalificaciones() {
     const inputs = document.querySelectorAll('.calificacion-input');
     let valido = true;
 
-    
+    // Limpiar calificaciones antes de procesar
     simulador.calificaciones = [];
 
     inputs.forEach(input => {
@@ -98,7 +99,7 @@ function procesarCalificaciones() {
         simulador.guardarEnStorage();
         const promedio = simulador.calcularPromedio();
         mostrarMensaje(`El promedio de las calificaciones es: ${promedio.toFixed(2)}`);
-        document.getElementById('resetButton').style.display = 'block'; 
+        document.getElementById('resetButton').style.display = 'block'; // Mostrar el botón de reinicio
     }
 }
 
