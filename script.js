@@ -4,6 +4,7 @@ class SimuladorPromedio {
         this.calificaciones = [];
     }
 
+    // Agrega una calificación si es válida (0-10)
     agregarCalificacion(calificacion) {
         if (calificacion >= 0 && calificacion <= 10) {
             this.calificaciones.push(calificacion);
@@ -12,33 +13,58 @@ class SimuladorPromedio {
         return false;
     }
 
+    // Calcula el promedio de las calificaciones
     calcularPromedio() {
         if (this.calificaciones.length === 0) return 0;
         const suma = this.calificaciones.reduce((acum, cal) => acum + cal, 0);
         return suma / this.calificaciones.length;
     }
 
+    // Guarda las calificaciones en datos.json
     guardarEnStorage() {
-        localStorage.setItem('calificaciones', JSON.stringify(this.calificaciones));
+        fetch('datos.json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ calificaciones: this.calificaciones })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Datos guardados:', data))
+        .catch(error => console.error('Error al guardar datos:', error));
     }
 
+    // Carga las calificaciones desde datos.json
     cargarDesdeStorage() {
-        const calificacionesGuardadas = JSON.parse(localStorage.getItem('calificaciones'));
-        if (calificacionesGuardadas) {
-            this.calificaciones = calificacionesGuardadas;
-        }
+        fetch('datos.json')
+            .then(response => response.json())
+            .then(data => {
+                this.calificaciones = data.calificaciones || [];
+            })
+            .catch(error => console.error('Error al cargar datos:', error));
     }
 
+    // Reinicia las calificaciones y guarda en datos.json
     reiniciarSimulador() {
         this.calificaciones = [];
-        localStorage.removeItem('calificaciones');
+        fetch('datos.json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ calificaciones: [] })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Datos reiniciados:', data))
+        .catch(error => console.error('Error al reiniciar datos:', error));
     }
 }
 
-// Inicialización
+// Inicialización del simulador
 const simulador = new SimuladorPromedio();
 simulador.cargarDesdeStorage();
 
+// Maneja el evento de envío del formulario para ingresar calificaciones
 document.getElementById('calificacionesForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -46,6 +72,7 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
     const calificacionesContainer = document.getElementById('calificacionesContainer');
     calificacionesContainer.innerHTML = ''; // Limpiar contenedor
 
+    // Validar el número de calificaciones
     if (isNaN(numCalificaciones) || numCalificaciones <= 0) {
         mostrarMensaje('Por favor ingresa un número válido de calificaciones.');
         return;
@@ -54,6 +81,7 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
     // Limpiar calificaciones antes de agregar nuevas
     simulador.calificaciones = [];
 
+    // Crear inputs para cada calificación
     for (let i = 0; i < numCalificaciones; i++) {
         const input = document.createElement('input');
         input.type = 'number';
@@ -65,6 +93,7 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
         calificacionesContainer.appendChild(input);
     }
 
+    // Crear y agregar botón para calcular promedio
     const calcularBtn = document.createElement('button');
     calcularBtn.textContent = 'Calcular Promedio';
     calcularBtn.type = 'button';
@@ -72,6 +101,7 @@ document.getElementById('calificacionesForm').addEventListener('submit', functio
     calificacionesContainer.appendChild(calcularBtn);
 });
 
+// Maneja el evento de clic en el botón de reinicio
 document.getElementById('resetButton').addEventListener('click', function() {
     simulador.reiniciarSimulador();
     document.getElementById('calificacionesForm').reset();
@@ -80,6 +110,7 @@ document.getElementById('resetButton').addEventListener('click', function() {
     this.style.display = 'none';
 });
 
+// Procesa las calificaciones y muestra el promedio
 function procesarCalificaciones() {
     const inputs = document.querySelectorAll('.calificacion-input');
     let valido = true;
@@ -103,6 +134,7 @@ function procesarCalificaciones() {
     }
 }
 
+// Muestra un mensaje en el contenedor de resultados
 function mostrarMensaje(mensaje) {
     const resultadoDiv = document.getElementById('resultado');
     resultadoDiv.textContent = mensaje;
